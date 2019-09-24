@@ -21,7 +21,25 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    /* root is the highest element, this :root is to define the variables we want to use*/
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
 
+    img {
+      /* use var if you want to use the variables
+      the -- is equivalent to the $ in SCSS
+       */
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -45,6 +63,20 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+
+    function handleUpdate() {
+      // dataset is all the 'data-' attributes in the element. In this case it's getting the 'px' for the sizing
+      const suffix = this.dataset.sizing || '';
+
+      // getting the element's style property. this.name refers to name in the elements(spacing, blue, base)
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix)
+    }
+
+    // the function is listening to it whenever the variables in the input changes
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    // the function is listening whenever the mouse is dragged
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
   </script>
 
 </body>
