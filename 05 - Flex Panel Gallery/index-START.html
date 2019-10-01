@@ -14,11 +14,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,6 +44,11 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -56,6 +62,33 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Understand flexbox
+    it will align page in a grid like table
+    first - display: flex;
+    second: justify-content: center;
+    align-items: center;
+    optional: flex-direction: column <-- if this is omitted, items are displayed in a row.
+     */
+
+    .panel > *:first-child {
+      /* transform hides it */
+      transform: translateY(-100%);
+    }
+    .panel.open-active > *:first-child {
+      /* transform shows it when open*/
+      transform: translateY(0);
+    }
+    .panel > *:last-child {
+      /* transform hides it */
+      transform: translateY(100%);
+    }
+    .panel.open-active > *:last-child {
+      transform: translateY(0);
     }
 
     .panel p {
@@ -64,13 +97,15 @@
       text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
       font-size: 2em;
     }
-    
+
     .panel p:nth-child(2) {
       font-size: 4em;
     }
 
     .panel.open {
       font-size: 40px;
+      /* flex of 5 means the element will take the space times 5 */
+      flex:5;
     }
 
   </style>
@@ -105,10 +140,23 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
 
+    // for when panel is clicked
+    function toggleOpen() {
+      this.classList.toggle('open');
+    };
+
+    // for adding the text that was hidden before
+    function toggleActive(e) {
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
+
+    // future things that you can do - use hover instead of clicking
   </script>
-
-
-
 </body>
 </html>
